@@ -3,8 +3,8 @@ function HeroSection() {
     <section className="hero" id="top">
       <p className="tag">Fundamental 6 Online Coaching</p>
       <h1>
-        Build a <span className="hero-accent">Lean, Powerful Physique</span> in{' '}
-        <span className="hero-accent-secondary">12 Weeks</span> Using the
+        Build a <span className="hero-accent">Lean, Powerful Physique</span>{' '}
+        in <span className="hero-accent-secondary">12 Weeks</span> Using the
         Fundamental 6 System Designed for Busy Adults
       </h1>
       <p className="hero-copy">
@@ -18,9 +18,8 @@ function HeroSection() {
           Get My Free Strength Breakdown
         </a>
       </div>
-      <p className="hero-fud">
-        no credit card required
-      </p>
+      <p className="hero-fud">no credit card required</p>
+
       <div className="proof-row">
         <p>
           <strong>12 Weeks</strong> measurable progression

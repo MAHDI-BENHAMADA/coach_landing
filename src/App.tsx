@@ -1,5 +1,6 @@
 import './App.css'
 import ApplySection from './components/ApplySection'
+import CoachSection from './components/CoachSection'
 import FaqSection from './components/FaqSection'
 import HeroSection from './components/HeroSection'
 import PainPointSection from './components/PainPointSection'
@@ -17,6 +18,7 @@ function App() {
       <ValuePropsSection />
       <ProofSection />
       <ProcessSection />
+      <CoachSection />
       <FaqSection />
       <TestimonialSliderSection />
       <ApplySection />

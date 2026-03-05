@@ -56,6 +56,59 @@ const investmentLabelMap: Record<string, string> = {
   '500+': '$500+',
 }
 
+const nameRegex = /^[A-Za-z][A-Za-z' -]{1,49}$/
+const instagramRegex = /^@?[A-Za-z0-9._]{1,30}$/
+const hasLettersRegex = /[A-Za-z]/
+
+const isAllowedValue = (value: string, map: Record<string, string>) =>
+  Object.prototype.hasOwnProperty.call(map, value)
+
+const validateStep1 = (data: ApplicationFormData) => {
+  if (!nameRegex.test(data.name.trim())) {
+    return 'Enter a real name (letters, spaces, apostrophe, hyphen only).'
+  }
+
+  if (!isAllowedValue(data.ageRange, ageRangeLabelMap)) {
+    return 'Select a valid age range.'
+  }
+
+  const instagramValue = data.instagram.trim()
+  if (instagramValue && !instagramRegex.test(instagramValue)) {
+    return 'Enter a valid Instagram handle (example: jamiefit or @jamiefit).'
+  }
+
+  if (!isAllowedValue(data.trainingDuration, trainingDurationLabelMap)) {
+    return 'Select a valid training duration.'
+  }
+
+  if (!isAllowedValue(data.currentLevel, currentLevelLabelMap)) {
+    return 'Select a valid current level.'
+  }
+
+  if (!isAllowedValue(data.trainingDays, trainingDaysLabelMap)) {
+    return 'Select a valid training frequency.'
+  }
+
+  return ''
+}
+
+const validateStep2 = (data: ApplicationFormData) => {
+  if (!isAllowedValue(data.mainGoal, mainGoalLabelMap)) {
+    return 'Select a valid main goal.'
+  }
+
+  const obstacleText = data.obstacles.trim()
+  if (!obstacleText || obstacleText.length < 15 || !hasLettersRegex.test(obstacleText)) {
+    return 'Describe your obstacle with at least 15 characters.'
+  }
+
+  if (!isAllowedValue(data.investment, investmentLabelMap)) {
+    return 'Select a valid investment range.'
+  }
+
+  return ''
+}
+
 function ApplyForm() {
   const rawFormId = (import.meta.env.VITE_FORMSPREE_FORM_ID ?? '').trim()
   const redirectUrl = (import.meta.env.VITE_FORMSPREE_REDIRECT_URL ?? '').trim()
@@ -106,12 +159,36 @@ function ApplyForm() {
 
   const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
+    const step1Error = validateStep1(formData)
+    if (step1Error) {
+      setSubmitError(step1Error)
+      return
+    }
+
+    setSubmitError('')
     setStep((prev) => prev + 1)
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (isSubmitting) {
+      return
+    }
+
+    if (!normalizedFormId) {
+      setSubmitError('Form is not configured. Set VITE_FORMSPREE_FORM_ID and redeploy.')
+      return
+    }
+
+    const step1Error = validateStep1(formData)
+    if (step1Error) {
+      setSubmitError(step1Error)
+      return
+    }
+
+    const step2Error = validateStep2(formData)
+    if (step2Error) {
+      setSubmitError(step2Error)
       return
     }
 
@@ -128,13 +205,23 @@ function ApplyForm() {
         },
       })
 
+      const responseBody = await response.json().catch(() => null)
+
       if (!response.ok) {
-        throw new Error('Submission failed')
+        const apiMessage =
+          responseBody?.errors?.map((item: { message?: string }) => item.message).join(' ') ||
+          responseBody?.error ||
+          `Submission failed (${response.status})`
+        throw new Error(apiMessage)
       }
 
       window.location.assign(nextRedirectUrl)
-    } catch {
-      setSubmitError('Something went wrong while submitting. Please try again.')
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : 'Something went wrong while submitting. Please try again.'
+      setSubmitError(message)
       setIsSubmitting(false)
     }
   }
@@ -157,12 +244,6 @@ function ApplyForm() {
       <input type="hidden" name="_next" value={nextRedirectUrl} />
       <input type="text" name="_gotcha" className="form-gotcha" tabIndex={-1} autoComplete="off" />
 
-      {!normalizedFormId ? (
-        <p className="form-setup-note">
-          Form not connected yet. Add <code>VITE_FORMSPREE_FORM_ID</code> in your
-          local env file.
-        </p>
-      ) : null}
       {submitError ? <p className="form-setup-note">{submitError}</p> : null}
 
       {step === 1 && (
@@ -178,6 +259,10 @@ function ApplyForm() {
               value={formData.name}
               onChange={handleChange}
               required
+              minLength={2}
+              maxLength={50}
+              pattern="[A-Za-z][A-Za-z' -]{1,49}"
+              title="Use letters, spaces, apostrophe, or hyphen only."
             />
           </label>
 
@@ -208,6 +293,10 @@ function ApplyForm() {
               placeholder="@yourhandle"
               value={formData.instagram}
               onChange={handleChange}
+              minLength={1}
+              maxLength={30}
+              pattern="@?[A-Za-z0-9._]{1,30}"
+              title="Use letters, numbers, dots, underscores, with or without @."
             />
           </label>
 
@@ -330,6 +419,9 @@ function ApplyForm() {
               rows={4}
               value={formData.obstacles}
               onChange={handleChange}
+              required
+              minLength={15}
+              maxLength={500}
             />
           </label>
 

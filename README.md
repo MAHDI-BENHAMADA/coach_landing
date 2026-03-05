@@ -71,3 +71,16 @@ export default defineConfig([
   },
 ])
 ```
+
+## Formspree Setup
+
+1. Create a form at https://formspree.io and copy your form ID (example: `xgvyyzzz`).
+2. Create a local env file from `.env.example`:
+   - Copy `.env.example` to `.env.local`
+3. Set your values:
+   - `VITE_FORMSPREE_FORM_ID=your_form_id`
+   - Optional: `VITE_FORMSPREE_REDIRECT_URL=https://yourdomain.com/thanks`
+4. Restart the dev server after editing env files.
+
+Submitted applications are stored in your Formspree dashboard and delivered
+through the notifications you configure there (email, integrations, etc.).

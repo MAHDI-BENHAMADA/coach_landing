@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type ApplicationFormData = {
   name: string
@@ -12,8 +12,71 @@ type ApplicationFormData = {
   investment: string
 }
 
+const ageRangeLabelMap: Record<string, string> = {
+  under18: 'Under 18',
+  '18-24': '18-24',
+  '25-34': '25-34',
+  '35-44': '35-44',
+  '45+': '45+',
+}
+
+const trainingDurationLabelMap: Record<string, string> = {
+  under3months: 'Less than 3 months',
+  '3to12months': '3-12 months',
+  '1to3years': '1-3 years',
+  '3plus': '3+ years',
+}
+
+const currentLevelLabelMap: Record<string, string> = {
+  beginner: 'Beginner',
+  intermediate: 'Intermediate',
+  advanced: 'Advanced',
+}
+
+const trainingDaysLabelMap: Record<string, string> = {
+  '2': '2 days',
+  '3': '3 days',
+  '4': '4 days',
+  '5+': '5+ days',
+}
+
+const mainGoalLabelMap: Record<string, string> = {
+  buildMuscle: 'Build muscle',
+  getStronger: 'Increase strength',
+  learnSkills: 'Learn calisthenics skills',
+  loseFat: 'Lose fat',
+  fitness: 'General fitness',
+}
+
+const investmentLabelMap: Record<string, string> = {
+  '100-199': '$100 - $199',
+  '200-299': '$200 - $299',
+  '300-399': '$300 - $399',
+  '400-499': '$400 - $499',
+  '500+': '$500+',
+}
+
 function ApplyForm() {
+  const rawFormId = (import.meta.env.VITE_FORMSPREE_FORM_ID ?? '').trim()
+  const redirectUrl = (import.meta.env.VITE_FORMSPREE_REDIRECT_URL ?? '').trim()
+
+  const normalizedFormId = rawFormId
+    .replace(/^https?:\/\/formspree\.io\//i, '')
+    .replace(/^\/?f\//i, '')
+
+  const formAction = normalizedFormId
+    ? `https://formspree.io/f/${normalizedFormId}`
+    : 'https://formspree.io/f/YOUR_FORM_ID'
+
+  const defaultThankYouUrl =
+    typeof window !== 'undefined'
+      ? `${window.location.origin}/thank-you.html`
+      : '/thank-you.html'
+
+  const nextRedirectUrl = redirectUrl || defaultThankYouUrl
+
   const [step, setStep] = useState(1)
+  const formRef = useRef<HTMLFormElement | null>(null)
   const [formData, setFormData] = useState<ApplicationFormData>({
     name: '',
     ageRange: '',
@@ -29,8 +92,14 @@ function ApplyForm() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
   ) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
+    const { value } = e.target
+    const field = e.target.dataset.field as keyof ApplicationFormData | undefined
+
+    if (!field) {
+      return
+    }
+
+    setFormData((prev) => ({ ...prev, [field]: value }))
   }
 
   const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -38,13 +107,29 @@ function ApplyForm() {
     setStep((prev) => prev + 1)
   }
 
+  useEffect(() => {
+    if (step > 1 && formRef.current) {
+      formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }, [step])
+
   return (
     <form
+      ref={formRef}
       className="apply-form"
-      action="https://formspree.io/f/YOUR_FORM_ID"
+      action={formAction}
       method="POST"
     >
       <input type="hidden" name="_subject" value="New Coaching Application" />
+      <input type="hidden" name="_next" value={nextRedirectUrl} />
+      <input type="text" name="_gotcha" className="form-gotcha" tabIndex={-1} autoComplete="off" />
+
+      {!normalizedFormId ? (
+        <p className="form-setup-note">
+          Form not connected yet. Add <code>VITE_FORMSPREE_FORM_ID</code> in your
+          local env file.
+        </p>
+      ) : null}
 
       {step === 1 && (
         <>
@@ -54,7 +139,7 @@ function ApplyForm() {
             What's your name?
             <input
               type="text"
-              name="name"
+              data-field="name"
               placeholder="Your full name"
               value={formData.name}
               onChange={handleChange}
@@ -65,7 +150,7 @@ function ApplyForm() {
           <label>
             Which age range do you fall into?
             <select
-              name="ageRange"
+              data-field="ageRange"
               value={formData.ageRange}
               onChange={handleChange}
               required
@@ -85,7 +170,7 @@ function ApplyForm() {
             What's your Instagram @ ?
             <input
               type="text"
-              name="instagram"
+              data-field="instagram"
               placeholder="@yourhandle"
               value={formData.instagram}
               onChange={handleChange}
@@ -95,7 +180,7 @@ function ApplyForm() {
           <label>
             How long have you been training?
             <select
-              name="trainingDuration"
+              data-field="trainingDuration"
               value={formData.trainingDuration}
               onChange={handleChange}
               required
@@ -113,7 +198,7 @@ function ApplyForm() {
           <label>
             Which best describes your current level?
             <select
-              name="currentLevel"
+              data-field="currentLevel"
               value={formData.currentLevel}
               onChange={handleChange}
               required
@@ -130,7 +215,7 @@ function ApplyForm() {
           <label>
             How many days per week can you realistically train?
             <select
-              name="trainingDays"
+              data-field="trainingDays"
               value={formData.trainingDays}
               onChange={handleChange}
               required
@@ -155,21 +240,33 @@ function ApplyForm() {
         <>
           <h3>Step 2: Your goals and commitment</h3>
 
-          <input type="hidden" name="name" value={formData.name} />
-          <input type="hidden" name="ageRange" value={formData.ageRange} />
-          <input type="hidden" name="instagram" value={formData.instagram} />
+          <input type="hidden" name="Full Name" value={formData.name} />
           <input
             type="hidden"
-            name="trainingDuration"
-            value={formData.trainingDuration}
+            name="Age Range"
+            value={ageRangeLabelMap[formData.ageRange] ?? ''}
           />
-          <input type="hidden" name="currentLevel" value={formData.currentLevel} />
-          <input type="hidden" name="trainingDays" value={formData.trainingDays} />
+          <input type="hidden" name="Instagram" value={formData.instagram} />
+          <input
+            type="hidden"
+            name="Training Duration"
+            value={trainingDurationLabelMap[formData.trainingDuration] ?? ''}
+          />
+          <input
+            type="hidden"
+            name="Current Level"
+            value={currentLevelLabelMap[formData.currentLevel] ?? ''}
+          />
+          <input
+            type="hidden"
+            name="Training Days"
+            value={trainingDaysLabelMap[formData.trainingDays] ?? ''}
+          />
 
           <label>
             What is your #1 priority right now?
             <select
-              name="mainGoal"
+              data-field="mainGoal"
               value={formData.mainGoal}
               onChange={handleChange}
               required
@@ -185,10 +282,16 @@ function ApplyForm() {
             </select>
           </label>
 
+          <input
+            type="hidden"
+            name="Main Goal"
+            value={mainGoalLabelMap[formData.mainGoal] ?? ''}
+          />
+
           <label>
             What has been the biggest obstacle to your progress so far?
             <textarea
-              name="obstacles"
+              data-field="obstacles"
               placeholder="Injuries, lack of structure, motivation, time..."
               rows={4}
               value={formData.obstacles}
@@ -196,11 +299,17 @@ function ApplyForm() {
             />
           </label>
 
+          <input
+            type="hidden"
+            name="Biggest Obstacle"
+            value={formData.obstacles}
+          />
+
           <label>
             How much are you open to investing in coaching if it's the right
             fit? 💵
             <select
-              name="investment"
+              data-field="investment"
               value={formData.investment}
               onChange={handleChange}
               required
@@ -215,6 +324,12 @@ function ApplyForm() {
               <option value="500+">$500+</option>
             </select>
           </label>
+
+          <input
+            type="hidden"
+            name="Investment Range"
+            value={investmentLabelMap[formData.investment] ?? ''}
+          />
 
           <button type="submit" className="btn btn-primary">
             Submit Application

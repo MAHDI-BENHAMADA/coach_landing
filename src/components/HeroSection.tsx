@@ -3,8 +3,9 @@ function HeroSection() {
     <section className="hero" id="top">
       <p className="tag">Fundamental 6 Online Coaching</p>
       <h1>
-        Build a Lean, Powerful Physique in 12 Weeks Using the Fundamental 6
-        System Designed for Busy Men
+        Build a <span className="hero-accent">Lean, Powerful Physique</span> in{' '}
+        <span className="hero-accent-secondary">12 Weeks</span> Using the
+        Fundamental 6 System Designed for Busy Adults
       </h1>
       <p className="hero-copy">
         Stuck training hard but still look the same? This is the only
@@ -13,13 +14,13 @@ function HeroSection() {
         12 weeks.
       </p>
       <div className="hero-cta">
-        <a className="btn btn-primary" href="#apply">
+        <a className="btn btn-primary hero-main-cta" href="#apply">
           Get My Free Strength Breakdown
         </a>
-        <a className="btn btn-ghost" href="#pain-point">
-          See If This Is For You
-        </a>
       </div>
+      <p className="hero-fud">
+        no credit card required
+      </p>
       <div className="proof-row">
         <p>
           <strong>12 Weeks</strong> measurable progression
@@ -28,7 +29,7 @@ function HeroSection() {
           <strong>45 Min</strong> per session
         </p>
         <p>
-          <strong>2,700+</strong> strong community
+          <strong>2,9k+</strong> strong community
         </p>
       </div>
     </section>

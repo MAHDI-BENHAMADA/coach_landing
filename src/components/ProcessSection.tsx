@@ -1,7 +1,7 @@
 function ProcessSection() {
   return (
     <section className="section" id="process">
-      <h2>How It Works Without Pressure Calls</h2>
+      <h2>How It Works</h2>
       <ol className="steps">
         <li>
           <span>1</span>
@@ -18,8 +18,7 @@ function ProcessSection() {
           <div>
             <h3>Receive Your Strength Audit</h3>
             <p>
-              You get a personalized breakdown and clear next steps. No pressure
-              pitch.
+              You get a personalized breakdown and clear next steps.
             </p>
           </div>
         </li>
@@ -29,7 +28,6 @@ function ProcessSection() {
             <h3>Start Coaching</h3>
             <p>
               You begin with onboarding, your plan, and direct coaching support.
-              No pressure pitch, just execution.
             </p>
           </div>
         </li>

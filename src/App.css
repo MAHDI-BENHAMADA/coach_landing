@@ -12,7 +12,7 @@
   --line: #d8c4ae;
   --card: rgba(255, 251, 244, 0.82);
   min-height: 100vh;
-  padding: 2.5rem 1.1rem 3.5rem;
+  padding: 3rem 1.1rem 5rem;
   background:
     radial-gradient(circle at 5% 0%, #ffd8b8, transparent 30%),
     radial-gradient(circle at 95% 10%, #d8ece8, transparent 26%),
@@ -24,7 +24,7 @@
 .hero {
   max-width: 1080px;
   margin: 0 auto;
-  padding: 2.4rem 1.4rem;
+  padding: 3rem 1.8rem;
   text-align: left;
   border-radius: 22px;
   background: linear-gradient(130deg, #fff2de, #e8f0ec 55%, #fdf4e8);
@@ -55,14 +55,17 @@
   letter-spacing: -0.02em;
 }
 
-.hero h1 span {
-  display: block;
+.hero-accent {
   color: var(--primary-strong);
+}
+
+.hero-accent-secondary {
+  color: #0f6e5f;
 }
 
 .hero-copy {
   max-width: 58ch;
-  margin: 1rem 0 0;
+  margin: 1.15rem 0 0;
   color: var(--ink-soft);
   font-size: clamp(1rem, 2vw, 1.1rem);
 }
@@ -71,7 +74,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.7rem;
-  margin-top: 1.3rem;
+  margin-top: 1.55rem;
 }
 
 .btn {
@@ -94,6 +97,11 @@
   box-shadow: 0 8px 18px rgba(160, 65, 20, 0.3);
 }
 
+.hero-main-cta {
+  font-size: 1rem;
+  padding: 0.84rem 1.2rem;
+}
+
 .btn-primary:hover {
   filter: brightness(1.04);
   transform: translateY(-2px);
@@ -106,8 +114,17 @@
   background: #fffbf4;
 }
 
+.hero-fud {
+  margin: 0.75rem 0 0;
+  font-size: 0.83rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #8f4317;
+}
+
 .proof-row {
-  margin-top: 1.3rem;
+  margin-top: 1.6rem;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.8rem;
@@ -131,7 +148,8 @@
 
 .section {
   max-width: 1080px;
-  margin: 1rem auto 0;
+  margin: 2.2rem auto 0;
+  padding: 1.35rem 0;
 }
 
 .split {
@@ -144,7 +162,7 @@
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: 16px;
-  padding: 1rem;
+  padding: 1.35rem;
   box-shadow: 0 10px 24px rgba(41, 34, 27, 0.07);
   transition: transform 180ms ease, box-shadow 180ms ease;
 }
@@ -155,7 +173,7 @@
 }
 
 .story-card {
-  min-height: 190px;
+  min-height: 230px;
 }
 
 .story-card.accent {
@@ -163,7 +181,7 @@
 }
 
 .section h2 {
-  margin: 0.8rem 0;
+  margin: 0 0 1.1rem;
   font-size: clamp(1.4rem, 3vw, 2.15rem);
 }
 
@@ -177,6 +195,109 @@
   display: grid;
   gap: 0.9rem;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.value-title {
+  max-width: 18ch;
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+}
+
+.value-title span {
+  color: var(--primary-strong);
+}
+
+.value-intro {
+  margin: 0 0 1rem;
+  max-width: 62ch;
+  font-size: 1rem;
+}
+
+.value-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.value-card {
+  padding: 1.2rem;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--card);
+  box-shadow: 0 10px 24px rgba(41, 34, 27, 0.07);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.value-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(41, 34, 27, 0.12);
+}
+
+.value-card h3 {
+  font-size: 1.08rem;
+  line-height: 1.2;
+  margin: 0.1rem 0 0.45rem;
+}
+
+.value-card p {
+  margin: 0;
+}
+
+.value-chip {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  padding: 0.12rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid #dfb18b;
+  color: #8f4317;
+  background: #fff5e9;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+
+.value-card strong {
+  color: #8f4317;
+}
+
+.proof-section {
+  text-align: center;
+}
+
+.proof-swiper {
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+  padding-bottom: 2rem;
+}
+
+.proof-card {
+  margin: 0;
+  border-radius: 0;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.proof-card img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 72vh;
+  object-fit: contain;
+  border-radius: 0;
+}
+
+.proof-swiper .swiper-pagination-bullet-active {
+  background: var(--primary-strong);
 }
 
 .fit-grid h3,
@@ -195,7 +316,7 @@
   padding: 0;
   margin: 0;
   display: grid;
-  gap: 0.7rem;
+  gap: 1rem;
 }
 
 .steps li {
@@ -206,7 +327,7 @@
   border: 1px solid var(--line);
   border-radius: 14px;
   background: var(--bg-soft);
-  padding: 0.85rem;
+  padding: 1.05rem;
 }
 
 .steps span {
@@ -224,21 +345,48 @@
   border: 1px solid #e6cfb7;
   border-radius: 16px;
   background: linear-gradient(160deg, #fff8ee, #f8ece0);
-  padding: 1rem;
+  padding: 1.5rem;
 }
 
 .apply > p {
   margin-top: 0;
 }
 
-.no-pressure {
-  font-weight: 700;
-  color: #6f2f0f;
+.testimonial-slider {
+  text-align: center;
+}
+
+.testimonial-swiper {
+  width: 100%;
+  max-width: 920px;
+  margin: 0 auto;
+  padding-bottom: 2rem;
+}
+
+.testimonial-slide-image-wrap {
+  margin: 0;
+  min-height: 360px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.testimonial-slide-image-wrap img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 68vh;
+  object-fit: contain;
+}
+
+.testimonial-swiper .swiper-pagination-bullet-active {
+  background: var(--primary-strong);
 }
 
 .apply-form {
   display: grid;
-  gap: 0.8rem;
+  gap: 1rem;
 }
 
 .apply-form h3 {
@@ -303,7 +451,7 @@
 
 .footer {
   max-width: 1080px;
-  margin: 1.6rem auto 0;
+  margin: 2.4rem auto 0;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -334,15 +482,37 @@
 
 @media (max-width: 760px) {
   .landing-page {
-    padding-top: 1.2rem;
+    padding-top: 1.4rem;
   }
 
   .hero {
-    padding: 1.3rem 1rem;
+    padding: 1.8rem 1rem;
+  }
+
+  .section {
+    margin-top: 1.4rem;
+    padding: 0.8rem 0;
+  }
+
+  .proof-card {
+    min-height: 320px;
+    padding: 0.45rem;
+  }
+
+  .proof-card img {
+    max-height: 62vh;
   }
 
   .proof-row {
     grid-template-columns: 1fr;
+  }
+
+  .testimonial-slide-image-wrap {
+    min-height: 280px;
+  }
+
+  .testimonial-slide-image-wrap img {
+    max-height: 56vh;
   }
 
   .steps li {

@@ -3,38 +3,27 @@ function PainPointSection() {
     <section className="section split" id="pain-point">
       <article className="card story-card">
         <h2>Avoid Burnout and Plateaus by Training Smarter, Not Longer</h2>
-        <p>Dear Busy Men Who Want To Get Strong,</p>
+        <p>If you are training hard but still look the same, this is why:</p>
         <ul>
-          <li>
-            Do you train consistently but still struggle to see real muscle
-            growth?
-          </li>
-          <li>
-            Are your chin ups and push ups stuck at the same numbers for months?
-          </li>
-          <li>
-            Have you tried multiple programs but nothing truly changed your
-            physique?
-          </li>
+          <li>Your push ups and chin ups are stuck.</li>
+          <li>Your physique is not changing despite consistency.</li>
+          <li>You are doing more work, not better progression.</li>
         </ul>
-        <p>You are not lazy. You are not undisciplined.</p>
-        <p>You are following programs built on volume, not progression.</p>
+        <p>You are not lazy. Your system is.</p>
       </article>
 
       <article className="card story-card accent">
         <h2>The Real Problem</h2>
-        <p>Most programs are built on volume, not progression.</p>
-        <p>More sets. More exercises. More fatigue.</p>
-        <p>But no measurable strength increase.</p>
+        <p>Most programs reward fatigue instead of measurable strength.</p>
         <ul>
-          <li>You hit plateaus every few months</li>
-          <li>You never unlock harder variations</li>
-          <li>Your physique barely changes</li>
-          <li>You start questioning your genetics</li>
+          <li>Plateaus keep repeating.</li>
+          <li>Harder variations never unlock.</li>
+          <li>Confidence drops while effort rises.</li>
         </ul>
-        <p>You do not need more workouts.</p>
-        <p>You need a progression system that forces strength to increase weekly.</p>
-        <p>That is what the Fundamental 6 was built to do.</p>
+        <p>
+          You do not need more workouts. You need progression that forces weekly
+          strength gains. That is what Fundamental 6 is built for.
+        </p>
       </article>
     </section>
   )

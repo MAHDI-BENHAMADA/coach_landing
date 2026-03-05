@@ -8,10 +8,6 @@ function ApplySection() {
         Discover exactly what is limiting your progress and the fastest way to
         fix it.
       </p>
-      <p className="no-pressure">
-        No sales calls. No pressure. If we are not a fit, you still walk away
-        with a clear plan.
-      </p>
       <ApplyForm />
     </section>
   )

@@ -77,6 +77,8 @@ function ApplyForm() {
 
   const [step, setStep] = useState(1)
   const formRef = useRef<HTMLFormElement | null>(null)
+  const [submitError, setSubmitError] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState<ApplicationFormData>({
     name: '',
     ageRange: '',
@@ -107,6 +109,36 @@ function ApplyForm() {
     setStep((prev) => prev + 1)
   }
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (isSubmitting) {
+      return
+    }
+
+    setSubmitError('')
+    setIsSubmitting(true)
+
+    try {
+      const payload = new FormData(e.currentTarget)
+      const response = await fetch(formAction, {
+        method: 'POST',
+        body: payload,
+        headers: {
+          Accept: 'application/json',
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error('Submission failed')
+      }
+
+      window.location.assign(nextRedirectUrl)
+    } catch {
+      setSubmitError('Something went wrong while submitting. Please try again.')
+      setIsSubmitting(false)
+    }
+  }
+
   useEffect(() => {
     if (step > 1 && formRef.current) {
       formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -119,6 +151,7 @@ function ApplyForm() {
       className="apply-form"
       action={formAction}
       method="POST"
+      onSubmit={handleSubmit}
     >
       <input type="hidden" name="_subject" value="New Coaching Application" />
       <input type="hidden" name="_next" value={nextRedirectUrl} />
@@ -130,6 +163,7 @@ function ApplyForm() {
           local env file.
         </p>
       ) : null}
+      {submitError ? <p className="form-setup-note">{submitError}</p> : null}
 
       {step === 1 && (
         <>
@@ -331,8 +365,8 @@ function ApplyForm() {
             value={investmentLabelMap[formData.investment] ?? ''}
           />
 
-          <button type="submit" className="btn btn-primary">
-            Submit Application
+          <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+            {isSubmitting ? 'Submitting...' : 'Submit Application'}
           </button>
         </>
       )}
